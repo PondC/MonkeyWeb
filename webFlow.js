@@ -68,7 +68,7 @@ module.exports=function(app,db){
         if(options==undefined)options={};
         var url=options.url;
         if(url==undefined)url="/"+page;
-        var outputPath=path.join(__dirname,"../",page+".html");
+        var outputPath=path.join(__dirname,"old/"+page+".html");
         if(options.backendDir==true)outputPath=path.join(__dirname,page+".html");
         var middlewareOptions=options.middlewareOptions;
         if(middlewareOptions==undefined)middlewareOptions={};
@@ -88,12 +88,19 @@ module.exports=function(app,db){
         logPosition(req.cookies,function(positionColor){
             console.log(chalk.black.bgYellow("[404 REQUEST]",req.method,req.originalUrl,"FROM",req.ip,positionColor("#"+req.cookies.monkeyWebUser),moment().format("@ dddDDMMMYYYY HH:mm:ss")));
             console.log("\treq.body","=>",req.body);
-            res.status(404).sendFile(path.join(__dirname,"../404.html"));
+            res.status(404).sendFile(path.join(__dirname,"old/404.html"));
         });
     };
 
     addPage("login");
-    addPage("login",{url:"/"});
+    app.get("/",function(req,res){
+        console.log("wth????????????????????");
+        logPosition(req.cookies,function(positionColor){
+            console.log(chalk.black.bgGreen("[PAGE REQUEST]"),"/","FROM",req.ip,positionColor("#"+req.cookies.monkeyWebUser),moment().format("@ dddDDMMMYYYY HH:mm:ss"));
+            res.status(200).sendFile(__dirname+"/dist/main.html");
+        });
+    });
+    // addPage("login",{url:"/"});
     addPugPage("studentDocument");
     var options={middlewareOptions:{login:true,position:"student",studentStatus:{$in:["active","inactive"]}}};
         addPugPage("home",options);

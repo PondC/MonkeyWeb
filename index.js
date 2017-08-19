@@ -16,8 +16,8 @@ app.use(cookieParser());
 //Temp folder for uploading
 app.use(multer({dest:"/tmp/"}).any());
 // Serve static files
-app.use(express.static(path.join(__dirname,"../public")));
-app.use(express.static(path.join(__dirname,"../../MonkeyWebData")));
+app.use(express.static(path.join(__dirname,"dist")));
+app.use(express.static(path.join(__dirname,"../MonkeyWebData")));
 app.use(function(req,res,next){
     // Allow access from other domain
     res.header("Access-Control-Allow-Origin","*");
@@ -29,13 +29,13 @@ app.use(function(req,res,next){
     next();
 });
 // Allow render from pug files
-app.set("views",path.join(__dirname,"../views"));
+app.set("views",path.join(__dirname,"old/views"));
 app.set("view engine","pug");
 
 // Enable HTTPS
-var caPath=path.join(__dirname,"../../MonkeyWebConfig/ca_bundle.crt");
-var keyPath=path.join(__dirname,"../../MonkeyWebConfig/private.key");
-var certPath=path.join(__dirname,"../../MonkeyWebConfig/certificate.crt");
+var caPath=path.join(__dirname,"../MonkeyWebConfig/ca_bundle.crt");
+var keyPath=path.join(__dirname,"../MonkeyWebConfig/private.key");
+var certPath=path.join(__dirname,"../MonkeyWebConfig/certificate.crt");
 if(fs.existsSync(caPath)&&fs.existsSync(keyPath)&&fs.existsSync(certPath)){
     var credentials={
         ca:fs.readFileSync(caPath),
@@ -53,7 +53,7 @@ app.listen(8080);
 
 // LINE Notify tokens
 var recipientTokenPath=path.join(
-    __dirname,"../../MonkeyWebConfig/recipientToken.json"
+    __dirname,"../MonkeyWebConfig/recipientToken.json"
 );
 if(fs.existsSync(recipientTokenPath)){
     app.locals.recipientToken=JSON.parse(

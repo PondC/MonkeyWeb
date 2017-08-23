@@ -303,6 +303,11 @@ block body
                         +form-group("start"): +input-number("start")(required)
                         +form-group("limit"): +input-number("limit")(required)
                         +submit("post/listStudentCommentByIndex")
+                +list-group-item
+                    +form-horizontal-title("post/clearStudentComment")
+                        +form-group("commentID"): +input-text("commentID")(required)
+                        +form-group("isCleared"): +input-checkbox-inline("isCleared",1,"isCleared")
+                        +submit("post/clearStudentComment")
             +panel-list-group("Student Attendance")
                 +list-group-item
                     +form-horizontal-title("post/addStudentAbsenceModifier")

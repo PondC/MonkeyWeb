@@ -90,6 +90,7 @@ MongoClient.connect("mongodb://127.0.0.1:27017/monkeyDB",function(err,db){
     // userDB.deleteMany({position:"student"});
     // db.collection("CR60Q2").deleteOne({grade:[11,12]});
 
+    studentCommentDB.updateMany({isCleared:{$exists:false}},{$set:{isCleared:false}});
     studentCommentDB.dropIndexes();
     studentCommentDB.createIndex({studentID:1,priority:-1,timestamp:-1});
     studentCommentDB.createIndex({timestamp:-1});

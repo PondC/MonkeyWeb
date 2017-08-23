@@ -69,18 +69,12 @@ module.exports=function(app,db){
         var url=options.url;
         if(url==undefined)url="/"+page;
         var outputPath=path.join(__dirname,"old/"+page+".html");
-        if(options.backendDir==true)outputPath=path.join(__dirname,page+".html");
         var middlewareOptions=options.middlewareOptions;
         if(middlewareOptions==undefined)middlewareOptions={};
-        var type="html";
-        if(options.type)type=options.type;
-        var local={};
-        if(options.local)local=options.local;
         app.get(url,checkAuth(middlewareOptions),function(req,res){
             logPosition(req.cookies,function(positionColor){
                 console.log(chalk.black.bgGreen("[PAGE REQUEST]"),page,"FROM",req.ip,positionColor("#"+req.cookies.monkeyWebUser),moment().format("@ dddDDMMMYYYY HH:mm:ss"));
-                if(type=="pug")res.status(200).render(page,local);
-                else res.status(200).sendFile(outputPath);
+                res.status(200).sendFile(outputPath);
             });
         });
     };
@@ -151,8 +145,8 @@ module.exports=function(app,db){
                 });
             });
         });
-    addPage("testadmin",{backendDir:true,middlewareOptions:{login:true,position:"dev"}});
-    addPugPage("testDev",{backendDir:true,middlewareOptions:{login:true,position:"dev"}},function(callback){
+    addPage("testadmin",{middlewareOptions:{login:true,position:"dev"}});
+    addPugPage("testDev",{middlewareOptions:{login:true,position:"dev"}},function(callback){
         var local={moment:moment};
         post("post/allCourse",{},function(result){
             Object.assign(local,result);

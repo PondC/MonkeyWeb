@@ -16,6 +16,7 @@ app.use(cookieParser());
 //Temp folder for uploading
 app.use(multer({dest:"/tmp/"}).any());
 // Serve static files
+app.use(express.static(path.join(__dirname,"assets")));
 app.use(express.static(path.join(__dirname,"dist")));
 app.use(express.static(path.join(__dirname,"../MonkeyWebData")));
 app.use(function(req,res,next){

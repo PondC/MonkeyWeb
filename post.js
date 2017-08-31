@@ -1150,7 +1150,8 @@ module.exports=function(app,db){
                 studentCommentDB.insertOne({
                     _id:commentID,studentID:studentID,tutorID:tutorID,
                     message:message,timestamp:moment().valueOf(),
-                    priority:priority,hasAttachment:hasAttachment
+                    priority:priority,hasAttachment:hasAttachment,
+                    isCleared:false
                 },function(){
                     res.send({});
                 });
@@ -1219,6 +1220,18 @@ module.exports=function(app,db){
                 Object.assign(output[i],result[i]);
             }
             res.send({comment:output});
+        });
+    });
+    //OK {commentID,isCleared} return {}
+    post("/post/clearStudentComment",function(req,res){
+        var commentID=req.body.commentID;
+        // TODO Better true/false request
+        var isCleared=bool(req.body.isCleared);
+        if(req.body.isCleared==undefined)isCleared=false;
+        studentCommentDB.updateOne({_id:commentID},{
+            $set:{isCleared:isCleared}
+        },function(){
+            res.send({});
         });
     });
 

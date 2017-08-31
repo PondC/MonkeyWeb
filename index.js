@@ -16,6 +16,7 @@ app.use(cookieParser());
 //Temp folder for uploading
 app.use(multer({dest:"/tmp/"}).any());
 // Serve static files
+app.use(express.static(path.join(__dirname,"assets")));
 app.use(express.static(path.join(__dirname,"dist")));
 app.use(express.static(path.join(__dirname,"../MonkeyWebData")));
 app.use(function(req,res,next){
@@ -89,6 +90,7 @@ MongoClient.connect("mongodb://127.0.0.1:27017/monkeyDB",function(err,db){
     // userDB.deleteMany({position:"student"});
     // db.collection("CR60Q2").deleteOne({grade:[11,12]});
 
+    studentCommentDB.updateMany({isCleared:{$exists:false}},{$set:{isCleared:false}});
     studentCommentDB.dropIndexes();
     studentCommentDB.createIndex({studentID:1,priority:-1,timestamp:-1});
     studentCommentDB.createIndex({timestamp:-1});
